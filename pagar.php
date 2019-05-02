@@ -7,17 +7,47 @@ include 'cavecera.php';
 if ($_POST) {
   $total = 0;
   $sid = session_id();
-  $correo = $_POST['email'];
+  $correo = $_POST['correo'];
+  $nombre = $_POST['Nombre'];
+  $Apellido = $_POST['Apellido'];
+  $Telefono = $_POST['Telefono'];
+  $Direccion = $_POST['direccion'];
+  $Ciudad = $_POST['Ciudad'];
+  $Estado = $_POST['Estado'];
+  $Codigo_postal = $_POST['Codigo_postal'];
+  $RFC = $_POST['RFC'];
+  $direccion_fac = $_POST['direccion_fac'];
+  $razon_social = $_POST['razon_social'];
+  
+  
 
   foreach ($_SESSION['carrito'] as $indice => $producto) {
     $total = $total + ($producto['CANTIDAD'] * $producto['PRECIO']);
   }
+   
+//    
 
-  $sentencia = $pdo->prepare("INSERT INTO `tblventas` (`id`, `clavetransaccion`, `paypaldatos`, `fecha`, `correo`, `total`, `status`)
-   VALUES (NULL, :clavetransaccion, '', NOW(), :correo, :total, 'vendido');");
+  $sentencia = $pdo->prepare("INSERT INTO `tblventas` (`id`, `clavetransaccion`, `paypaldatos`, `fecha`, `correo`, 
+                                                        `total`, `status`, `nombre`, `apellido`, `telefono`,
+                                                        `direccion1`, `ciudad`, `estado`, `codigo_postal`, `rfc`, `direccion_factura`, `razon_social`)
+                                                 VALUES (NULL, :clavetransaccion, '', NOW(), :correo,
+                                                 :total, 'vendido', :nombre, :Apellido, :Telefono,
+                                                 :Direccion, :Ciudad, :Estado, :Codigo_postal, :RFC, :direccion_fac, :razon_social);");
   $sentencia->bindParam(":clavetransaccion", $sid);
   $sentencia->bindParam(":correo", $correo);
   $sentencia->bindParam(":total", $total);
+  $sentencia->bindParam(":nombre", $nombre);     
+  $sentencia->bindParam(":Apellido", $Apellido);
+  $sentencia->bindParam(":Telefono", $Telefono);
+  $sentencia->bindParam(":Direccion", $Direccion);
+  $sentencia->bindParam(":Ciudad", $Ciudad);
+  $sentencia->bindParam(":Estado", $Estado);
+  $sentencia->bindParam(":Codigo_postal", $Codigo_postal);
+  $sentencia->bindParam(":RFC", $RFC);
+  $sentencia->bindParam(":direccion_fac", $direccion_fac);
+  $sentencia->bindParam(":razon_social", $razon_social);
+  
+  
   $sentencia->execute();
   $idventa = $pdo->lastInsertId();
 
@@ -25,8 +55,8 @@ if ($_POST) {
 
   foreach ($_SESSION['carrito'] as $indice => $producto) {
     $sentencia = $pdo->prepare("INSERT INTO 
-`detalleventa` (`id`, `idventa`, `idproducto`, `preciounitario`, `cantidad`, `vendido`) 
-VALUES (NULL, $idventa, :idproducto , :preciounitario, :cantidad, '0');");
+`detalleventa` (`id`, `idventa`, `idproducto`, `preciounitario`, `cantidad`, `vendido`, `modelo`) 
+VALUES (NULL, $idventa, :idproducto , :preciounitario, :cantidad, '0', :modelo)");
  
 
 
@@ -34,6 +64,8 @@ VALUES (NULL, $idventa, :idproducto , :preciounitario, :cantidad, '0');");
     $sentencia->bindParam(":idproducto", $producto['ID']);
     $sentencia->bindParam(":preciounitario", $producto['PRECIO']);
     $sentencia->bindParam(":cantidad", $producto['CANTIDAD']);
+    $sentencia->bindParam(":cantidad", $producto['CANTIDAD']);
+    $sentencia->bindParam(":modelo", $producto['modelo']);
     $sentencia->execute();
   
  
@@ -97,7 +129,7 @@ VALUES (NULL, $idventa, :idproducto , :preciounitario, :cantidad, '0');");
               total: '<?php echo $total ?>',
               currency: 'MXN'
             },
-            description: "compra de productos a offic class $ <?php echo number_format($total, 2); ?>",
+            description: "compra de productos a office class $ <?php echo number_format($total, 2); ?>",
             custom: " <?php echo $sid;?>#<?php echo openssl_encrypt($idventa,code,key ); ?>"
           }]
         }
@@ -107,7 +139,7 @@ VALUES (NULL, $idventa, :idproducto , :preciounitario, :cantidad, '0');");
       return actions.payment.execute().then(function() {
       //  window.alert('Payment Complete!');
         console.log(data);
-        window.location = "php/verificar.php?paymentToken=" + data.paymentToken +"& paymentID = "+data.paymentID;
+        window.location = "verificar.php?paymentToken=" + data.paymentToken +"&paymentID="+data.paymentID;
       });
 
     }

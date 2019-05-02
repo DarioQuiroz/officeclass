@@ -21,7 +21,7 @@ include 'cavecera.php' ?>
 
   foreach ($_SESSION['carrito'] as $indice => $producto) {
     $sentencia = $pdo->prepare("INSERT INTO 
-`detalleventa` (`id`, `idventa`, `idproducto`, `preciounitario`, `cantidad`, `vendido`) 
+`detalleventa` (`id`, `idventa`, `idproducto`, `preciounitario`, `cantidad`, `vendido`, `modelo`) 
 VALUES (NULL, :idventa, :idproducto, :preciounitario, :cantidad, '0');");
 
     $sentencia->bindParam(":idventa", $idventa);
@@ -101,7 +101,7 @@ VALUES (NULL, :idventa, :idproducto, :preciounitario, :cantidad, '0');");
       return actions.payment.execute().then(function() {
         window.alert('Payment Complete!');
         console.log(data);
-        window.location = "php/verificar.php?paymentToken=" + data.paymentToken
+        window.location = "verificar.php?paymentToken=" + data.paymentToken
       });
 
     }

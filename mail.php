@@ -3,12 +3,10 @@
 	
 	if(!empty($_POST)){
 		$destino="gil.q.c.dq@gmail.com";
-$nombre=$_POST['name'];
-$correo=$_POST['email'];
-$telefono=$_POST['phone'];
-$asunto=$_POST['subject'];
-$mensaje=$_POST['message'];
-$contenido="Nombre: ".$nombre. "\nCorreo: " .$correo. "\nTelefono: " .$telefono."\nMensaje: " .$mensaje;
+$nombre=$_POST['Nombrereg'];
+$correo=$_POST['Emailreg'];
+$asunto="ESTE ES EL ASUNTO";
+$contenido="Nombre: ".$nombre. "\nCorreo: " .$correo;
 
 		$captcha = $_POST['g-recaptcha-response'];
 		
@@ -18,7 +16,7 @@ $contenido="Nombre: ".$nombre. "\nCorreo: " .$correo. "\nTelefono: " .$telefono.
             ?>
             <script type="text/javascript">
             alert("Verifica correctamente el recaptcha");
-           window.location.href="http://paginamuestra.info/PDCM/#start-your-project";
+           window.location.href="http://paginamuestra.info/office/index.php";
             </script>
             <?php
 			
@@ -34,7 +32,7 @@ $contenido="Nombre: ".$nombre. "\nCorreo: " .$correo. "\nTelefono: " .$telefono.
                 ?>
                 <script type="text/javascript">
                 alert("Tu mensaje ha sido enviado éxitosamente");
-                window.location.href="http://paginamuestra.info/PDCM/#start-your-project";
+                window.location.href="http://paginamuestra.info/office/index.php";
                 </script>
                 <?php
                 
@@ -42,7 +40,7 @@ $contenido="Nombre: ".$nombre. "\nCorreo: " .$correo. "\nTelefono: " .$telefono.
                     ?>
                     <script type="text/javascript">
                     alert("Verifica correctamente el recaptcha");
-                    window.location.href="http://paginamuestra.info/PDCM/#start-your-project";
+                    window.location.href="http://paginamuestra.info/office/index.php";
                     </script>
                     <?php
 			}
